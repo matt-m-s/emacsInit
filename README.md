@@ -1,5 +1,5 @@
-# emacsInit
+# <center>emacsInit</center>
 
 My Lisp ~/.emacs/ configuration file  
 
-## Matthew Schuckmann 2019-1-8
+## <center>Matthew Schuckmann 2019-1-8 </center>
