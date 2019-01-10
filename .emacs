@@ -17,13 +17,20 @@
 (add-to-list 'package-archives
        '("melpa" . "http://melpa.org/packages/") t)
 
+(when (< emacs-major-version 24)
+  ;; For important compatibility libraries like cl-lib
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+
 (package-initialize)
 (package-refresh-contents)
 
 (defvar myPackages
   '(better-defaults
     elpy ;; add the elpy package 
-    material-theme))
+    material-theme
+    volatile-highlights
+    undo-tree
+    yasnippet))
 
 (mapc #'(lambda (package)
     (unless (package-installed-p package)
@@ -35,8 +42,8 @@
 
 (setq inhibit-startup-message t) ;; hide the startup message
 
-;; Theme enabled
-(load-theme 'material t) ;; load material theme
+;; Theme disabled
+;; (load-theme 'material t) ;; load material theme
 
 (global-linum-mode t) ;; enable line numbers globally
 
@@ -46,12 +53,22 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+
  '(package-selected-packages (quote (material-theme better-defaults))))
-(custom-set-faces
+ (custom-set-faces
+  
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
 
+(require 'volatile-highlights)
+(volatile-highlights-mode t)
+
 (elpy-enable)
+
+(require 'undo-tree)
+(undo-tree-mode t)
+
+(require 'yasnippet)
