@@ -38,11 +38,10 @@
 
 (elpy-enable)
 
-;; Tron Theme Customization
-
+;; Manual Theme Customization
+;; --------------------------------------
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-
-(load-theme 'tron t)
+;; (load-theme 'tron t)
 
 ;; BASIC CUSTOMIZATION
 ;; --------------------------------------
@@ -62,7 +61,16 @@
 ;; Enable line numbers globally
 (global-linum-mode t)
 
+;; Keyboard bindings
+;; --------------------------------------
+(global-set-key (kbd "C-x C-m") 'tmm-menubar)
+
+(global-set-key (kbd "C-x C-k") '(lambda ()
+                                 (interactive)
+                                 (popup-menu 'yank-menu)))
+
 ;; Theme disabled
+;; --------------------------------------
 ;; (load-theme 'material t) ;; load material theme
 
 ;; init.el ends here
