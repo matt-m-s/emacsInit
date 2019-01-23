@@ -1,4 +1,4 @@
-;; ~/.emacs --- Emacs Lisp configuration file
+2;; ~/.emacs --- Emacs Lisp configuration file
 
 ;; INSTALL PACKAGES
 ;; --------------------------------------
@@ -16,7 +16,8 @@
 (package-refresh-contents)
 
 (defvar myPackages
-  '(better-defaults
+  '(auto-complete
+    better-defaults
     elpy ;; add the elpy package 
     material-theme
     volatile-highlights
@@ -28,6 +29,9 @@
       (package-install package)))
       myPackages)
 
+(require 'auto-complete)
+(ac-config-default)
+
 (require 'volatile-highlights)
 (volatile-highlights-mode t)
 
@@ -37,6 +41,29 @@
 (require 'yasnippet)
 
 (elpy-enable)
+
+;; Load File at Startup
+;; --------------------------------------
+;; Tell emacs where is your personal elisp lib dir
+(add-to-list 'load-path "~/.emacs.d/lisp")
+
+;; load the package named perl-completion.el.
+(load "perl-completion") ;; best not to include the ending “.el” or “.elc
+
+(add-hook 'cperl-mode-hook
+          (lambda()
+            (require 'perl-completion)
+            (perl-completion-mode t)))
+
+(add-hook  'cperl-mode-hook
+           (lambda ()
+             (when (require 'auto-complete nil t) ; no error whatever auto-complete.el is not installed.
+               (auto-complete-mode t)
+               (make-variable-buffer-local 'ac-sources)
+               (setq ac-sources
+                     '(ac-source-perl-completion)))))
+
+(load "anything")
 
 ;; Manual Theme Customization
 ;; --------------------------------------
@@ -50,7 +77,7 @@
 (setq inhibit-startup-message t)
 
 ;; Make all backup files go into a directory  
-(setq backup-directory-alist `(("." . "~/emacs_saves")))
+(setq backup-directory-alist `(("." . "~/emacs/emacs_saves")))
 
 ;; Remove the inital Lisp message
 (setq initial-scratch-message "")
@@ -80,11 +107,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-
  '(package-selected-packages (quote (material-theme better-defaults))))
 
- (custom-set-faces
-  
+ 
+(custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
