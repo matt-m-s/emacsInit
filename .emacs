@@ -1,4 +1,4 @@
-2;; ~/.emacs --- Emacs Lisp configuration file
+;; ~/.emacs --- Emacs Lisp configuration file
 
 ;; INSTALL PACKAGES
 ;; --------------------------------------
@@ -22,6 +22,7 @@
     material-theme
     volatile-highlights
     undo-tree
+    web-mode
     yasnippet))
 
 (mapc #'(lambda (package)
@@ -37,6 +38,8 @@
 
 (require 'undo-tree)
 (undo-tree-mode t)
+
+(require 'web-mode)
 
 (require 'yasnippet)
 
@@ -63,6 +66,8 @@
                (setq ac-sources
                      '(ac-source-perl-completion)))))
 
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
 (load "anything")
 
 ;; Manual Theme Customization
@@ -83,7 +88,7 @@
 (setq inhibit-startup-message t)
 
 ;; Make all backup files go into a directory  
-(setq backup-directory-alist `(("." . "~/emacs/emacs_saves")))
+(setq backup-directory-alist `(("." . "~/emacs/emacs_saves/")))
 
 ;; Remove the inital Lisp message
 (setq initial-scratch-message "")
@@ -211,3 +216,5 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
