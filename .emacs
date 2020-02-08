@@ -43,7 +43,52 @@
 
 (require 'yasnippet)
 
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(require 'handlebars-mode)
+
 (elpy-enable)
+
+;; --------------------------------------------------------------------------
+;; Javascript configuation
+;; https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
+(require 'js2-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
+;; Better imenu	   
+(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+
+(require 'js2-refactor)
+
+(require 'xref-js2)
+
+(add-hook 'js2-mode-hook #'js2-refactor-mode)
+(js2r-add-keybindings-with-prefix "C-c C-r")
+(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+
+;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
+;; unbind it.
+(define-key js-mode-map (kbd "M-.") nil)
+
+(add-hook 'js-mode-hook (lambda ()
+  (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+
+(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+
+;; https://emacs.cafe/emacs/javascript/setup/2017/05/09/emacs-setup-javascript-2.html
+(require 'company)
+
+(require 'company-tern)
+
+(add-to-list 'company-backends 'company-tern)
+(add-hook 'js2-mode-hook (lambda ()
+			   (tern-mode)
+			   (company-mode)))
+;; Disable completion keybindings, as we use xref-js2 instead
+(define-key tern-mode-keymap (kbd "M-.") nil)
+(define-key tern-mode-keymap (kbd "M-,") nil)	  
+
+;; --------------------------------------------------------------------------
+
 
 ;; Load File at Startup
 ;; --------------------------------------
@@ -194,7 +239,9 @@
  '(nrepl-message-colors
    (quote
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
- '(package-selected-packages (quote (material-theme better-defaults)))
+ '(package-selected-packages
+   (quote
+    (company-tern xref-js2 js2-refactor js2-mode material-theme better-defaults)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
